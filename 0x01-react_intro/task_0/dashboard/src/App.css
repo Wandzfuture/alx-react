@@ -1,0 +1,32 @@
+.App {
+  height: 100vh;
+  max-width: 100vw;
+  font-family: Arial, sans-serif;
+}
+
+.App-header {
+  display: flex;
+  align-items: center;
+  color: #E0354B;
+  border-bottom: 3px solid #E0354B;
+}
+
+.App-header img {
+  width: 200px;
+  height: 200px;
+}
+
+.App-body {
+  margin: 50px;
+  height: 60vh;
+}
+
+.App-footer {
+  border-top: 3px solid #E0354B;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  font-style: italic;
+}
