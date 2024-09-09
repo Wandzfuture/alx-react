@@ -1,20 +1,22 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import Notifications from './Notifications';
 import NotificationItem from './NotificationItem';
 
-describe('NotificationItem component', () => {
+describe('Notifications component', () => {
   it('renders without crashing', () => {
-    shallow(<NotificationItem />);
+    shallow(<Notifications />);
   });
 
-  it('renders correct html with type and value props', () => {
-    const wrapper = shallow(<NotificationItem type="default" value="test" />);
-    expect(wrapper.find('li').prop('data-notification-type')).toBe('default');
-    expect(wrapper.text()).toBe('test');
+  it('renders NotificationItem elements', () => {
+    const wrapper = shallow(<Notifications />);
+    expect(wrapper.find(NotificationItem)).toHaveLength(3);
   });
 
-  it('renders correct html with html prop', () => {
-    const wrapper = shallow(<NotificationItem html={{ __html: '<u>test</u>' }} />);
-    expect(wrapper.find('span').prop('dangerouslySetInnerHTML')).toEqual({ __html: '<u>test</u>' });
+  it('renders the first NotificationItem element with correct html', () => {
+    const wrapper = shallow(<Notifications />);
+    const firstNotificationItem = wrapper.find(NotificationItem).first();
+    expect(firstNotificationItem.prop('type')).toBe('default');
+    expect(firstNotificationItem.text()).toBe('Notification 1');
   });
 });
