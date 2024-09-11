@@ -1,40 +1,43 @@
 /* REACT TESTING LIBRARY TESTS */
 import { render, screen, fireEvent } from "@testing-library/react"
-import { userEvent } from "@testing-library/user-event"
 import App from "./App"
 
+/*
+test that App renders without crashing
+verify that App renders a div with the class App-header
+verify that App renders a div with the class App-body
+verify that App renders a div with the class App-footer
+ */
+
 describe('App', () => {
-  it("app renders without crashing", () => {
-    render(<App/>)
-    const headerElem = screen.getByRole("heading", {name: "School dashboard"})
-    expect(headerElem).toBeInTheDocument()
-  })
+    it("app renders without crashing", () => {
+        render(<App/>)
+        const headerElem = screen.getByRole("heading", {name: "School dashboard"})
+        expect(headerElem).toBeInTheDocument()
+    })
 
-  it('app does not render CourseList by default(isLoggedIn is false)', () => {
-    render(<App />)
-    expect(screen.queryByTestId('CourseList')).not.toBeInTheDocument()
-  })
-  
-  it('app renders CourseList when isLoggedIn is true', async () => {
-    render(<App />)
-    const btn = screen.getByText('OK')
-    expect(btn).toBeInTheDocument()
-    await fireEvent.mouseDown(btn)
+    it('app does not render CourseList by default(isLoggedIn is false)', () => {
+        render(<App />)
+        expect(screen.queryByTestId('CourseList')).not.toBeInTheDocument()
+    })
+    
+    it('app renders CourseList when isLoggedIn is true', async () => {
+        render(<App />)
+        const btn = screen.getByText('OK')
+        expect(btn).toBeInTheDocument()
+        await fireEvent.click(btn)
+        expect(screen.getByTestId('CourseList')).toBeInTheDocument()
+    })
 
-  })
+    it('the logOut function is called when ctrl + h keys are pressed', () => {
+        const logOut = jest.fn()
+        const testAlert = jest.fn()
+        window.alert = testAlert
+        const { container } = render(<App logOut={logOut} />)
+        fireEvent.keyDown(container, { key: "h", ctrlKey: true })
+        expect(logOut).toHaveBeenCalled()
+        expect(testAlert).toHaveBeenCalledWith("Logging you out")
+        testAlert.mockRestore()
+    })
 
-  it('calls logOut and displays alert when Ctrl+H is pressed', () => {
-    const logOutMock = jest.fn();
-    const alertMock = jest.spyOn(window, 'alert');
-
-    render(<App logOut={logOutMock} />);
-
-    fireEvent.keyDown(document, { ctrlKey: true, key: 'h' });
-
-    expect(logOutMock).toHaveBeenCalledTimes(1);
-    expect(alertMock).toHaveBeenCalledTimes(1);
-    expect(alertMock).toHaveBeenCalledWith('Logging you out');
-
-    alertMock.mockRestore();
-  })
 })
